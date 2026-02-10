@@ -87,6 +87,22 @@ dinner <- c("website/AfricanPeanutSoup.html",
 ```{r}
 #| echo: false
 library("rvest")
+library("english") #needed for arbitrary english numbering (looked this up)
+
+display.recipes = function(elements,meal) {
+  for (i in 1:length(elements)) {
+    #looked up how to use english and substr, specifically nchar for indexing to the end
+    index = as.character(english(i))
+    capitalized = paste(toupper(substr(index,1,1)),substr(index,2,nchar(index)),sep="")
+    if (length(elements) == 1) {
+      capitalized = "" #don't need to number a single element
+    }
+    cat(paste("#",meal, " Recipe ", capitalized,"\n\n"))
+    display.recipe(elements[i]) #display function could also be an argument, first class functions!
+  }
+}
+
+
 
 
 display.recipe = function(fpath) {
@@ -159,38 +175,35 @@ for (i in 1:length(recipes)) {
 
 \newpage
 
-# Recipe One
-
 
 ```{r}
 #| echo: false
 #| results: asis
-display.recipe(dnr.sample[1])
+#display.recipe(dnr.sample[1])
+display.recipes(dnr.sample,"Dinner")
+display.recipes(bfst.sample,"Breakfast")
 ```
 
 
-# Recipe Two
 
 ```{r}
 #| echo: false
 #| results: asis
-display.recipe(dnr.sample[2])
+#display.recipe(dnr.sample[2])
 ```
 
 
-# Recipe Three
-
 ```{r}
 #| echo: false
 #| results: asis
-display.recipe(dnr.sample[3])
+#display.recipe(dnr.sample[3])
 ```
 
 
-# Breakfast Recipe
+
 
 ```{r}
 #| echo: false
 #| results: asis
-display.recipe(bfst.sample[1])
+#display.recipe(bfst.sample[1])
 ```
