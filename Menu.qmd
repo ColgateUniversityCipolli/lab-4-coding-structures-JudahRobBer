@@ -84,11 +84,72 @@ dinner <- c("website/AfricanPeanutSoup.html",
             "website/Shakshuka.html")
 ```
 
+```{r}
+#| echo: false
+library("rvest")
+
+load.recipes = function(dnr, dnr.num, bfst, bfst.num) {
+  dnr.sample = sample(x=dnr,size=dnr.num,replace=TRUE)
+  bfst.sample = sample(x=bfst,size=bfst.num,replace=TRUE)
+
+  recipes = list()
+ 
+  for (i in 1:length(dnr.sample)) {
+    recipes = append(recipes,load.recipe(dnr.sample[i]))
+  }
+
+  for (i in 1:length(bfst.sample)) {
+    recipes = append(recipes,load.recipe(bfst.sample[i]))
+  }
+}
+
+
+load.recipe = function(fpath) {
+  html = read_html(fpath)
+
+  ingredients = load.text(html,"#ingredients")
+  instructions = load.text(html,"#instructions")
+  image = load.image(html)
+
+  ingredients.html = as.character(paste("-", html_text(ingredients)),sep="\n")
+  instructions.html = as.character(paste("1.", html_text(instructions)),sep="\n")
+  image.html = as.character(paste('<img src="', image, '" style="width: 50%; height: auto;">'))
+
+  recipe.html = list(ingredients=ingredients,instructions=instructions,image=image)  
+}
+
+load.text = function(html,id) {
+  items = html_elements(html_element(html,id),"li")
+}
+load.image = function(html) {
+  image = html_element(html,".img-fluid")
+  src = html_attr(image,"src")
+  link = paste("website/",src,sep="")
+}
+
+
+dnr.sample = sample(x=dinner,size=3,replace=TRUE)
+bfst.sample = sample(x=breakfasts,size=1,replace=TRUE)
+```
+
+
 # Ingredients
 
 \newpage
 
 # Recipe One
+```{r}
+#| echo: false
+recipe1 = load.recipe(dnr.sample[1])
+image1 = recipe1$image
+(image1)
+```
+
+```{r}
+#| echo: false
+#| results: asis
+  cat(paste('![', "test", '](', image1, "){width=50%}"))
+```
 
 \newpage
 
