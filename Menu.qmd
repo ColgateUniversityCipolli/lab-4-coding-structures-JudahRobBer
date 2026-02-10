@@ -103,20 +103,16 @@ display.recipes = function(elements,meal) {
 }
 
 
-
-
 display.recipe = function(fpath) {
   recipe = load.recipe(fpath)
-  ingredients = recipe$ingredients
-  formatted_ingredients = paste("-", ingredients)
   
-  instructions = recipe$instructions
-  formatted_instructions = paste("-", instructions)
+  formatted_ingredients = paste("-", recipe$ingredients)
+  formatted_instructions = paste("-", recipe$instructions)
   
   title = recipe$title
   image = recipe$image
   
-  cat(paste("**",title,"**\n\n",sep="")) # I did not like the "figure:n" in the caption
+  cat(paste("**",title,"**\n\n"),sep="") # I did not like the "figure:n" in the caption
   cat(paste('![](', image, "){width=50%}\n\n"))
   cat("**Ingredients**\n\n")
   cat(formatted_ingredients,sep="\n")
@@ -165,8 +161,7 @@ ingredients = list()
 recipes = c(dnr.sample,bfst.sample)
 for (i in 1:length(recipes)) {
   recipe = load.recipe(recipes[i])
-  recipe.ingredients = recipe$ingredients
-  formatted_ingredients = paste("-", recipe.ingredients)
+  formatted_ingredients = paste("-", recipe$ingredients)
   cat(formatted_ingredients,sep="\n")
 }
 
@@ -178,7 +173,6 @@ for (i in 1:length(recipes)) {
 ```{r}
 #| echo: false
 #| results: asis
-#display.recipe(dnr.sample[1])
 display.recipes(dnr.sample,"Dinner")
 display.recipes(bfst.sample,"Breakfast")
 ```
