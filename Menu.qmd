@@ -106,6 +106,7 @@ display.recipe = function(fpath) {
   cat(formatted_ingredients,sep="\n")
   cat("\n\n**Instructions**\n\n")
   cat(formatted_instructions,sep="\n")
+  cat("\\newpage\n\n")
 }
 
 
@@ -167,7 +168,6 @@ for (i in 1:length(recipes)) {
 display.recipe(dnr.sample[1])
 ```
 
-\newpage
 
 # Recipe Two
 
@@ -177,7 +177,6 @@ display.recipe(dnr.sample[1])
 display.recipe(dnr.sample[2])
 ```
 
-\newpage
 
 # Recipe Three
 
@@ -187,7 +186,6 @@ display.recipe(dnr.sample[2])
 display.recipe(dnr.sample[3])
 ```
 
-\newpage
 
 # Breakfast Recipe
 
