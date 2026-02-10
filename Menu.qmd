@@ -142,13 +142,12 @@ load.recipe = function(fpath) {
 
 
 load.text = function(html,id) {
-  items = html_elements(html_element(html,id),"li")
+  items = html_element(html,id) |> html_elements("li")
 }
 
 
 load.image = function(html) {
-  image = html_element(html,".img-fluid")
-  src = html_attr(image,"src")
+  src = html_element(html,".img-fluid") |> html_attr("src")
   link = paste("website/",src,sep="")
 }
 
@@ -184,26 +183,3 @@ display.recipes(dnr.sample,"Dinner")
 display.recipes(bfst.sample,"Breakfast")
 ```
 
-
-
-```{r}
-#| echo: false
-#| results: asis
-#display.recipe(dnr.sample[2])
-```
-
-
-```{r}
-#| echo: false
-#| results: asis
-#display.recipe(dnr.sample[3])
-```
-
-
-
-
-```{r}
-#| echo: false
-#| results: asis
-#display.recipe(bfst.sample[1])
-```
