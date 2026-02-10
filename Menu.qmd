@@ -88,19 +88,24 @@ dinner <- c("website/AfricanPeanutSoup.html",
 #| echo: false
 library("rvest")
 
-load.recipes = function(dnr, dnr.num, bfst, bfst.num) {
-  dnr.sample = sample(x=dnr,size=dnr.num,replace=TRUE)
-  bfst.sample = sample(x=bfst,size=bfst.num,replace=TRUE)
 
-  recipes = list()
- 
-  for (i in 1:length(dnr.sample)) {
-    recipes = append(recipes,load.recipe(dnr.sample[i]))
-  }
-
-  for (i in 1:length(bfst.sample)) {
-    recipes = append(recipes,load.recipe(bfst.sample[i]))
-  }
+display.recipe = function(fpath) {
+  recipe = load.recipe(fpath)
+  ingredients = recipe$ingredients
+  formatted_ingredients = paste("-", ingredients)
+  
+  instructions = recipe$instructions
+  formatted_instructions = paste("-", instructions)
+  
+  title = recipe$title
+  image = recipe$image
+  
+  cat(paste("**",title,"**\n\n",sep="")) # I did not like the "figure:n" in the caption
+  cat(paste('![](', image, "){width=50%}\n\n"))
+  cat("**Ingredients**\n\n")
+  cat(formatted_ingredients,sep="\n")
+  cat("\n\n**Instructions**\n\n")
+  cat(formatted_instructions,sep="\n")
 }
 
 
@@ -111,16 +116,19 @@ load.recipe = function(fpath) {
   instructions = load.text(html,"#instructions")
   image = load.image(html)
 
-  ingredients.html = as.character(paste("-", html_text(ingredients)),sep="\n")
-  instructions.html = as.character(paste("1.", html_text(instructions)),sep="\n")
-  image.html = as.character(paste('<img src="', image, '" style="width: 50%; height: auto;">'))
+  ingredients.html = html_text(ingredients)
+  instructions.html = html_text(instructions)
+  title.html = html_element(html, "h1") |> html_text() 
 
-  recipe.html = list(ingredients=ingredients,instructions=instructions,image=image)  
+  recipe.html = list(ingredients=ingredients,instructions=instructions,image=image,title=title.html)  
 }
+
 
 load.text = function(html,id) {
   items = html_elements(html_element(html,id),"li")
 }
+
+
 load.image = function(html) {
   image = html_element(html,".img-fluid")
   src = html_attr(image,"src")
@@ -134,34 +142,57 @@ bfst.sample = sample(x=breakfasts,size=1,replace=TRUE)
 
 
 # Ingredients
+```{r}
+#| echo: false
+#| results: asis
+ingredients = list()
+recipes = c(dnr.sample,bfst.sample)
+for (i in 1:length(recipes)) {
+  recipe = load.recipe(recipes[i])
+  recipe.ingredients = recipe$ingredients
+  formatted_ingredients = paste("-", recipe.ingredients)
+  cat(formatted_ingredients,sep="\n")
+}
+
+```
 
 \newpage
 
 # Recipe One
-```{r}
-#| echo: false
-recipe1 = load.recipe(dnr.sample[1])
-image1 = recipe1$image
-(image1)
-```
+
 
 ```{r}
 #| echo: false
 #| results: asis
-  cat(paste('![', "test", '](', image1, "){width=50%}"))
+display.recipe(dnr.sample[1])
 ```
 
 \newpage
 
 # Recipe Two
 
+```{r}
+#| echo: false
+#| results: asis
+display.recipe(dnr.sample[2])
+```
+
 \newpage
 
 # Recipe Three
+
+```{r}
+#| echo: false
+#| results: asis
+display.recipe(dnr.sample[3])
+```
 
 \newpage
 
 # Breakfast Recipe
 
-
-small check
+```{r}
+#| echo: false
+#| results: asis
+display.recipe(bfst.sample[1])
+```
