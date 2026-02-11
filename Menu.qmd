@@ -109,11 +109,9 @@ display.recipe = function(fpath) {
   formatted_ingredients = paste("-", recipe$ingredients)
   formatted_instructions = paste("-", recipe$instructions)
   
-  title = recipe$title
-  image = recipe$image
   
-  cat(paste("**",title,"**\n\n"),sep="") # I did not like the "figure:n" in the caption
-  cat(paste('![](', image, "){width=50%}\n\n"))
+  cat(paste("##",recipe$title," {.unnumbered}\n\n")) # I did not like the "figure:n" in the caption, hacky workaround
+  cat(paste('![](', recipe$image, "){width=50%}\n\n"))
   cat("**Ingredients**\n\n")
   cat(formatted_ingredients,sep="\n")
   cat("\n\n**Instructions**\n\n")
@@ -124,30 +122,19 @@ display.recipe = function(fpath) {
 
 load.recipe = function(fpath) {
   html = read_html(fpath)
-
-  ingredients = load.text(html,"#ingredients")
-  instructions = load.text(html,"#instructions")
-  image = load.image(html)
-
-  ingredients.html = html_text(ingredients)
-  instructions.html = html_text(instructions)
+  
   title.html = html_element(html, "h1") |> html_text() 
 
+  ingredients = html_element(html,"#ingredients") |> html_elements("li") |> html_text()
+  instructions = html_element(html,"#instructions") |> html_elements("li") |> html_text()
+  
+  image.src = html_element(html,".img-fluid") |> html_attr("src")
+  image = paste("website/",image.src,sep="")
+  
   recipe.html = list(ingredients=ingredients,instructions=instructions,image=image,title=title.html)  
 }
 
-
-load.text = function(html,id) {
-  items = html_element(html,id) |> html_elements("li")
-}
-
-
-load.image = function(html) {
-  src = html_element(html,".img-fluid") |> html_attr("src")
-  link = paste("website/",src,sep="")
-}
-
-
+#Particular Instance
 dnr.sample = sample(x=dinner,size=3,replace=TRUE)
 bfst.sample = sample(x=breakfasts,size=1,replace=TRUE)
 ```
@@ -162,6 +149,7 @@ recipes = c(dnr.sample,bfst.sample)
 for (i in 1:length(recipes)) {
   recipe = load.recipe(recipes[i])
   formatted_ingredients = paste("-", recipe$ingredients)
+  cat(paste("\n\n##",recipe$title," {.unnumbered}\n"))
   cat(formatted_ingredients,sep="\n")
 }
 
