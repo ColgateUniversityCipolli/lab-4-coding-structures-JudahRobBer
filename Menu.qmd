@@ -135,7 +135,7 @@ load.recipe = function(fpath) {
 }
 
 #Particular Instance
-dnr.sample = sample(x=dinner,size=3,replace=TRUE)
+dnr.sample = sample(x=dinner,size=1,replace=TRUE)
 bfst.sample = sample(x=breakfasts,size=1,replace=TRUE)
 ```
 
