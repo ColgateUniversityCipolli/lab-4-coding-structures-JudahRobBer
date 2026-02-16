@@ -373,10 +373,14 @@ I used one conditional statement. When I was working on generalizing the recipe 
 ## Loops
 Did you use loops in your code? If yes, how. If not, are there places you could have used them but did something else?
 
+**Solution**
+
 I used a for loop for my master `display.recipes` function and within my logic for printing the ingredient list. I think to avoid using any looping I would have had to store my recipes and ingredients a single, different data structure. My solutions were not reliant ony any vectorization, which suggests that there were significant opportunities to make it more "`R` native" that I didn't see how to cleanly implement.
 
 ## Functions
 Did you use functions in your code? If yes, how. If not, are there places you could have used them but did something else?
+
+**Solution**
 
 My final solution had 3 functions, `display.recipes`, `display.recipe`, and `load.recipe`. The printing logic for the ingredient list could have been placed within a function, but since there's no repetition of the logic, it did not seem necessary. In earlier drafts I additionally separated out some of the html handling to tiny helper functions, but I decided that the benefits in readability from maximal functional decomposition were less than the cons of more code (largely due to whitespace).
 
